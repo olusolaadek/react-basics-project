@@ -1,26 +1,39 @@
 import { useState } from "react";
 import "./App.css";
-import Card from "./Card";
-import CardList from "./CardList";
+import UserForm from "./Users/UserForm";
+import UserList from "./Users/UserList";
 
 function App() {
   const [users, setUsers] = useState([]);
 
   function newUserHandler(user) {
-    setUsers([user, ...users]);
+    if (!users.some((d) => d.username === user.username)) {
+      // setUsers([...users, user]);
+      setUsers((prevUsers) => {
+        return [...prevUsers, user];
+      });
 
-    console.log("App Component", user);
+      console.log("App Component", user);
+    } else {
+      console.log("App Component: " + user.username + " is already added");
+    }
   }
 
   function deleteFromListHandler(userData) {
+    const index = users.findIndex((user) => {
+      return user.username === userData.username;
+    });
+    console.log("Deleted Index", index);
+    users.splice(index, 1);
+
+    setUsers([...users]);
     console.log("Deleted data from list", userData);
   }
   return (
-    <div className="container">
-      <Card onAddNewUser={newUserHandler} />
-      {console.log(Array.isArray(users))}
+    <div>
+      <UserForm onAddNewUser={newUserHandler} />
 
-      <CardList users={users} onDeleteFromList={deleteFromListHandler} />
+      <UserList users={users} onDeleteFromList={deleteFromListHandler} />
     </div>
   );
 }

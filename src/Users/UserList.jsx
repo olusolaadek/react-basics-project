@@ -1,7 +1,9 @@
 import React from "react";
 import UserItem from "./UserItem";
+import classes from "./UserList.module.css";
+import Card from "../UI/Card";
 
-function CardList(props) {
+function UserList(props) {
   const users = props.users;
 
   const deleteItemHandler = (userData) => {
@@ -10,21 +12,21 @@ function CardList(props) {
     console.log("Deleted user ", userData);
   };
   return (
-    <div className="mt-4 bt-1">
+    <Card className={classes.users}>
       <ul className="list-group">
         {users &&
           users.map((user) => (
             <UserItem
               user={user}
-              key={user.username}
+              key={user.id}
               onDeleteItem={deleteItemHandler}
             />
           ))}
       </ul>
 
       {users.length === 0 && <p>No users!</p>}
-    </div>
+    </Card>
   );
 }
 
-export default CardList;
+export default UserList;
